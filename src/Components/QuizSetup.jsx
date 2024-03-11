@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setQuizParameters } from "../action/quizAction";
 
 function QuizSetup() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const store = useSelector(state => state);
   const [params, setParams] = useState({
     name: "",
     category: "9",
@@ -12,7 +16,8 @@ function QuizSetup() {
   function handleOnFormSubmit(e) {
     e.preventDefault();
     console.log(params);
-    navigate('/quiz')
+    dispatch(setQuizParameters(params));
+    // navigate('/quiz');
   }
   function handleOnInputChange(e) {
     const { name, value } = e.target;
@@ -22,7 +27,7 @@ function QuizSetup() {
     <div>
       <h2>Set up your Quiz</h2>
       <pre>
-        <code>{JSON.stringify(params)}</code>
+        <code>{JSON.stringify(store)}</code>
       </pre>
       <form action="" onSubmit={handleOnFormSubmit}>
         <label htmlFor="name">
