@@ -26,9 +26,6 @@ function QuizSetup() {
   return (
     <div>
       <h2>Set up your Quiz</h2>
-      <pre>
-        <code>{JSON.stringify(store)}</code>
-      </pre>
       <form action="" onSubmit={handleOnFormSubmit}>
         <label htmlFor="name">
           Name:
