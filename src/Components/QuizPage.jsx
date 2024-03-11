@@ -126,36 +126,39 @@
 
 // export default QuizPage;
 
-
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import QuizQue from "../Components/QuizQue";
+import { fetchQuestionsSuccess } from "../action/quizAction";
 // import QuizQue from "./QuizQue"
 
 const Quizpage = () => {
-    const api =
-    "https://opentdb.com/api.php?amount=5&category=9&difficulty=medium&type=multiple";
-  const [quizData, setQuestions] = useState([]);
-//   const quizData = useSelector((state) => state.quizData);
+  const { name , category, difficulty, numQuestions } = useSelector((state) => state.quiz.quizParameters);
+//   console.log(category, difficulty, numQuestions);
+  const api = `https://opentdb.com/api.php?amount=${numQuestions}&category=${category}&difficulty=${difficulty}&type=multiple`;
+//   const [quizData, setQuestions] = useState([]);
+    const quizData = useSelector((state) => state.quiz.questions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
   const questions = quizData || [];
   const totalQuestions = questions.length;
+  const dispatch = useDispatch();
 
   const handleNextQuestion = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetch(api)
       .then((res) => res.json())
       .then((data) => {
-        setQuestions(data.results);
+        dispatch(fetchQuestionsSuccess(data.results));
+        // setQuestions(data.results);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [dispatch]);
 
   const handlePreviousQuestion = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
@@ -163,6 +166,11 @@ const Quizpage = () => {
 
   const handleAnswerSubmit = (answer) => {
     setUserAnswers((prevAnswers) => [...prevAnswers, answer]);
+        if(currentQuestion==questions.length-1) {
+            localStorage.setItem('scoreData',JSON.stringify({name,score}))
+            navigate("/leaderboard")
+        }
+
     handleNextQuestion();
   };
 
@@ -171,13 +179,13 @@ const Quizpage = () => {
     // Display modal or popup with performance metrics
   };
 
-  if (quizData.isLoading) {
-    return <div>Loading...</div>;
-  }
+//   if (quizData.isLoading) {
+//     return <div>Loading...</div>;
+//   }
 
-  if (quizData.isError) {
-    return <div>Error occurred while fetching data</div>;
-  }
+//   if (quizData.isError) {
+//     return <div>Error occurred while fetching data</div>;
+//   }
 
   if (totalQuestions === 0) {
     return <div>No questions available</div>;
@@ -215,4 +223,4 @@ const Quizpage = () => {
   );
 };
 
-export default Quizpage;
+export default Quizpage;

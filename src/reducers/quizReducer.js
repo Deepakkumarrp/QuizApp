@@ -1,5 +1,10 @@
 const initialState = {
-    quizParameters: {},
+    quizParameters: {
+        name: "User",
+        category: "9",
+        difficulty: "easy",
+        numQuestions: 5,
+    },
     questions: [],
     currentQuestionIndex: 0,
   };
