@@ -1,5 +1,7 @@
 const initialState = {
     quizParameters: {},
+    questions: [],
+    currentQuestionIndex: 0,
   };
   
   const quizReducer = (state = initialState, action) => {
@@ -9,9 +11,15 @@ const initialState = {
           ...state,
           quizParameters: action.payload,
         };
+        case `FETCH_QUESTIONS_SUCCESS`:
+            return {
+            ...state,
+            questions: action.payload,
+            };
       default:
         return state;
     }
   };
   
   export default quizReducer;
+

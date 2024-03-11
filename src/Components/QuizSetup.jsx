@@ -17,7 +17,7 @@ function QuizSetup() {
     e.preventDefault();
     console.log(params);
     dispatch(setQuizParameters(params));
-    // navigate('/quiz');
+    navigate('/quiz');
   }
   function handleOnInputChange(e) {
     const { name, value } = e.target;
